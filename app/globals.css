@@ -1,0 +1,165 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #050505;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: #c9a227;
+  color: #050505;
+}
+
+/* ========================================
+   SCROLLBAR
+======================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d0d0d;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c9a227;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #e5c45a;
+}
+
+/* ========================================
+   REVEAL ON SCROLL
+======================================== */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s ease-out,
+    transform 0.7s ease-out;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/*
+  Em dispositivos touch/mobile,
+  os elementos nunca ficam presos em opacity: 0
+  caso o IntersectionObserver não seja disparado.
+*/
+@media (hover: none) and (pointer: coarse) {
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ========================================
+   REDUÇÃO DE MOVIMENTO
+======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ========================================
+   TEXTO OUTLINE
+======================================== */
+
+.text-outline {
+  -webkit-text-stroke: 1px #c9a227;
+  color: transparent;
+}
+
+/* ========================================
+   DIVISOR DE SEÇÃO
+======================================== */
+
+.section-divider {
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #c9a227,
+    transparent
+  );
+}
+
+/* ========================================
+   SEGURANÇA DE LAYOUT MOBILE
+======================================== */
+
+/*
+  Evita que elementos maiores que a viewport
+  criem rolagem horizontal no celular.
+*/
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+/* Garante que textos longos não estourem containers */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  overflow-wrap: break-word;
+}
+
+/* ========================================
+   ACESSIBILIDADE
+======================================== */
+
+:focus-visible {
+  outline: 2px solid #c9a227;
+  outline-offset: 3px;
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 640px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+}
