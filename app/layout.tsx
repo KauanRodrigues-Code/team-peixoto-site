@@ -17,7 +17,9 @@ const inter = Inter({
 });
 
 const SITE_URL = "https://teampeixoto.com.br";
-const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+
+// ID de medição do fluxo Team Peixoto no Google Analytics
+const GA_ID = "G-CRLX8GMLZC";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -43,12 +45,7 @@ export const metadata: Metadata = {
     "academia em Morungaba",
   ],
 
-  authors: [
-    {
-      name: "Team Peixoto",
-    },
-  ],
-
+  authors: [{ name: "Team Peixoto" }],
   creator: "Team Peixoto",
   publisher: "Team Peixoto",
 
@@ -86,7 +83,8 @@ export const metadata: Metadata = {
   },
 
   icons: {
-    icon: "/favicon.ico",
+    icon: "/icon.png",
+    shortcut: "/favicon.ico",
   },
 };
 
@@ -100,8 +98,7 @@ const structuredData = {
   "@context": "https://schema.org",
   "@type": "SportsActivityLocation",
   name: "Team Peixoto",
-  description:
-    "Team Peixoto — Muay Thai e MMA em Morungaba - SP.",
+  description: "Team Peixoto — Muay Thai e MMA em Morungaba - SP.",
   url: SITE_URL,
   telephone: "+55 11 95698-2777",
   address: {
@@ -111,9 +108,7 @@ const structuredData = {
     addressRegion: "SP",
     addressCountry: "BR",
   },
-  sameAs: [
-    "https://www.instagram.com/teampeixotoofc/",
-  ],
+  sameAs: ["https://www.instagram.com/teampeixotoofc/"],
 };
 
 export default function RootLayout({
@@ -126,35 +121,27 @@ export default function RootLayout({
       <body className="font-body antialiased">
         {children}
 
-        {/* Dados estruturados para mecanismos de busca */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData),
+            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
           }}
         />
 
-        {/* Google Analytics */}
-        {GA_ID && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-              strategy="afterInteractive"
-            />
+        {/* Google Analytics 4 */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
 
-            <Script
-              id="google-analytics"
-              strategy="afterInteractive"
-            >
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){window.dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${GA_ID}');
-              `}
-            </Script>
-          </>
-        )}
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){window.dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_ID}');
+          `}
+        </Script>
       </body>
     </html>
   );
