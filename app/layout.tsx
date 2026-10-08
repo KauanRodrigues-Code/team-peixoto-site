@@ -16,10 +16,20 @@ const inter = Inter({
   display: "swap",
 });
 
+const SITE_URL = "https://teampeixoto.com.br";
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+
 export const metadata: Metadata = {
-  title: "Team Peixoto | Muay Thai & MMA em Morungaba",
+  metadataBase: new URL(SITE_URL),
+
+  title: {
+    default: "Team Peixoto | Muay Thai & MMA em Morungaba",
+    template: "%s | Team Peixoto",
+  },
+
   description:
     "Team Peixoto — Muay Thai e MMA em Morungaba - SP. Treinamento para iniciantes, atletas e competidores. Faça parte da equipe.",
+
   keywords: [
     "Muay Thai Morungaba",
     "MMA Morungaba",
@@ -28,23 +38,53 @@ export const metadata: Metadata = {
     "MMA SP",
     "academia Muay Thai",
     "treino Muay Thai",
+    "Muay Thai em Morungaba",
+    "MMA em Morungaba",
+    "academia em Morungaba",
   ],
-  authors: [{ name: "Team Peixoto" }],
+
+  authors: [
+    {
+      name: "Team Peixoto",
+    },
+  ],
+
+  creator: "Team Peixoto",
+  publisher: "Team Peixoto",
+
+  alternates: {
+    canonical: SITE_URL,
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+
   openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    url: SITE_URL,
+    siteName: "Team Peixoto",
     title: "Team Peixoto | Muay Thai & MMA em Morungaba",
     description:
       "Treinamento, disciplina e espírito de equipe para quem busca evoluir dentro e fora do ringue.",
-    url: "https://teampeixoto.com.br",
-    siteName: "Team Peixoto",
-    locale: "pt_BR",
-    type: "website",
   },
+
   twitter: {
     card: "summary_large_image",
     title: "Team Peixoto | Muay Thai & MMA em Morungaba",
     description:
       "Treinamento, disciplina e espírito de equipe para quem busca evoluir dentro e fora do ringue.",
   },
+
   icons: {
     icon: "/favicon.ico",
   },
@@ -56,7 +96,25 @@ export const viewport: Viewport = {
   themeColor: "#050505",
 };
 
-const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SportsActivityLocation",
+  name: "Team Peixoto",
+  description:
+    "Team Peixoto — Muay Thai e MMA em Morungaba - SP.",
+  url: SITE_URL,
+  telephone: "+55 11 95698-2777",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Av. Paulo Gomes, 193",
+    addressLocality: "Morungaba",
+    addressRegion: "SP",
+    addressCountry: "BR",
+  },
+  sameAs: [
+    "https://www.instagram.com/teampeixotoofc/",
+  ],
+};
 
 export default function RootLayout({
   children,
@@ -68,6 +126,15 @@ export default function RootLayout({
       <body className="font-body antialiased">
         {children}
 
+        {/* Dados estruturados para mecanismos de busca */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData),
+          }}
+        />
+
+        {/* Google Analytics */}
         {GA_ID && (
           <>
             <Script
